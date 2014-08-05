@@ -1,9 +1,11 @@
 package sample.extension.tests.it;
 
+import io.takari.maven.testing.TestDependencies;
 import io.takari.maven.testing.TestProperties;
 import io.takari.maven.testing.TestResources;
 import io.takari.maven.testing.it.VerifierResult;
 import io.takari.maven.testing.it.VerifierRuntime;
+import io.takari.maven.testing.it.VerifierRuntime.VerifierRuntimeBuilder;
 
 import java.io.File;
 import java.util.Arrays;
@@ -22,7 +24,9 @@ public class MavenExtensionIntegrationTest {
 
   public final VerifierRuntime verifier;
 
-  public final TestProperties proprties;
+  public final TestProperties proprties = new TestProperties();
+
+  public final TestDependencies dependencies = new TestDependencies(proprties);
 
   @Parameters(name = "maven-{0}")
   public static Iterable<Object[]> mavenVersions() {
@@ -34,10 +38,11 @@ public class MavenExtensionIntegrationTest {
 
   public MavenExtensionIntegrationTest(String mavenVersion) throws Exception {
     this.resources = new TestResources("src/test/projects", "target/it/" + mavenVersion + "/");
-    this.proprties = new TestProperties();
-    this.verifier = VerifierRuntime.builder(mavenVersion) //
-        .withExtension(new File("target/classes").getCanonicalFile()) //
-        .build();
+    VerifierRuntimeBuilder verifierBuilder = VerifierRuntime.builder(mavenVersion);
+    for (File extension : dependencies.getRuntimeClasspath()) {
+      verifierBuilder.withExtension(extension);
+    }
+    this.verifier = verifierBuilder.build();
   }
 
   @Test

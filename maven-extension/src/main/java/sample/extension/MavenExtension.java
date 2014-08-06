@@ -13,6 +13,7 @@ public class MavenExtension implements EventSpy {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
+  @SuppressWarnings("unused")
   private final DependencyClass dummy = new DependencyClass(); //
 
   @Override

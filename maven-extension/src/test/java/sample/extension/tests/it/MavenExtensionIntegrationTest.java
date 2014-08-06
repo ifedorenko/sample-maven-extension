@@ -5,7 +5,6 @@ import io.takari.maven.testing.TestProperties;
 import io.takari.maven.testing.TestResources;
 import io.takari.maven.testing.it.VerifierResult;
 import io.takari.maven.testing.it.VerifierRuntime;
-import io.takari.maven.testing.it.VerifierRuntime.VerifierRuntimeBuilder;
 
 import java.io.File;
 import java.util.Arrays;
@@ -38,11 +37,9 @@ public class MavenExtensionIntegrationTest {
 
   public MavenExtensionIntegrationTest(String mavenVersion) throws Exception {
     this.resources = new TestResources("src/test/projects", "target/it/" + mavenVersion + "/");
-    VerifierRuntimeBuilder verifierBuilder = VerifierRuntime.builder(mavenVersion);
-    for (File extension : dependencies.getRuntimeClasspath()) {
-      verifierBuilder.withExtension(extension);
-    }
-    this.verifier = verifierBuilder.build();
+    this.verifier = VerifierRuntime.builder(mavenVersion) //
+        .withExtensions(dependencies.getRuntimeClasspath()) //
+        .build();
   }
 
   @Test

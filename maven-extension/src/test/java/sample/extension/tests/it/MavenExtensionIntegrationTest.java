@@ -3,11 +3,11 @@ package sample.extension.tests.it;
 import io.takari.maven.testing.TestDependencies;
 import io.takari.maven.testing.TestProperties;
 import io.takari.maven.testing.TestResources;
+import io.takari.maven.testing.it.MavenVersions;
 import io.takari.maven.testing.it.VerifierResult;
 import io.takari.maven.testing.it.VerifierRuntime;
 
 import java.io.File;
-import java.util.Arrays;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,10 +29,7 @@ public class MavenExtensionIntegrationTest {
 
   @Parameters(name = "maven-{0}")
   public static Iterable<Object[]> mavenVersions() {
-    return Arrays.<Object[]>asList( //
-        new Object[] {"3.2.1"} //
-        , new Object[] {"3.2.2"} //
-        );
+    return MavenVersions.asJunitParameters("3.2.1", "3.2.2");
   }
 
   public MavenExtensionIntegrationTest(String mavenVersion) throws Exception {

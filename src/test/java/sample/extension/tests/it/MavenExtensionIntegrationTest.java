@@ -1,6 +1,5 @@
 package sample.extension.tests.it;
 
-import io.takari.maven.testing.TestDependencies;
 import io.takari.maven.testing.TestProperties;
 import io.takari.maven.testing.TestResources;
 import io.takari.maven.testing.executor.MavenExecutionResult;
@@ -16,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(MavenJUnitTestRunner.class)
-@MavenVersions({"3.2.1", "3.2.2"})
+@MavenVersions({"3.2.2", "3.2.5"})
 public class MavenExtensionIntegrationTest {
 
   @Rule
@@ -24,12 +23,10 @@ public class MavenExtensionIntegrationTest {
 
   public final TestProperties proprties = new TestProperties();
 
-  public final TestDependencies dependencies = new TestDependencies(proprties);
-
   public final MavenRuntime verifier;
 
   public MavenExtensionIntegrationTest(MavenRuntimeBuilder runtimeBuilder) throws Exception {
-    this.verifier = runtimeBuilder.withExtensions(dependencies.getRuntimeClasspath()) //
+    this.verifier = runtimeBuilder.withExtensions(proprties.getRuntimeClasspath()) //
         .build();
   }
 
@@ -40,6 +37,9 @@ public class MavenExtensionIntegrationTest {
         .withCliOption("-X") //
         .execute("package");
     result.assertErrorFreeLog();
+    result.assertLogText("MavenExtension#init");
+    result.assertLogText("MavenExtension#onEvent");
+    result.assertLogText("MavenExtension#close");
   }
 
 }

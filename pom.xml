@@ -5,18 +5,12 @@
   <groupId>com.ifedorenko.maven</groupId>
   <artifactId>sample-maven-extension</artifactId>
   <version>0.1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>takari-jar</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <takariLifecycleVersion>1.8.0-SNAPSHOT</takariLifecycleVersion>
     <mavenVersion>3.2.2</mavenVersion>
+    <pluginTestingVersion>2.1.0</pluginTestingVersion>
   </properties>
-
-  <modules>
-    <module>maven-extension</module>
-    <module>maven-extension-dependency</module>
-  </modules>
 
   <dependencies>
     <dependency>
@@ -40,6 +34,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <!-- must match version used in maven core -->
       <version>14.0.1</version>
       <scope>provided</scope>
     </dependency>
@@ -54,7 +49,14 @@
     <dependency>
       <groupId>io.takari.maven.plugins</groupId>
       <artifactId>takari-plugin-testing</artifactId>
-      <version>${takariLifecycleVersion}</version>
+      <version>${pluginTestingVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.takari.maven.plugins</groupId>
+      <artifactId>takari-plugin-integration-testing</artifactId>
+      <version>${pluginTestingVersion}</version>
+      <type>pom</type>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -64,37 +66,34 @@
       <plugin>
         <groupId>io.takari.maven.plugins</groupId>
         <artifactId>takari-lifecycle-plugin</artifactId>
+        <version>1.10.2</version>
         <extensions>true</extensions>
+        <configuration>
+          <proc>none</proc>
+        </configuration>
+        <executions>
+          <execution>
+            <id>testProperties</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>testProperties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>generate-index</id>
+            <goals>
+              <goal>main-index</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>io.takari.maven.plugins</groupId>
-          <artifactId>takari-lifecycle-plugin</artifactId>
-          <version>${takariLifecycleVersion}</version>
-          <configuration>
-            <!-- compile/testCompile -->
-            <source>1.7</source>
-
-            <!-- jar -->
-            <sourceJar>true</sourceJar>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>sisu-maven-plugin</artifactId>
-          <version>1.1</version>
-          <executions>
-            <execution>
-              <id>generate-index</id>
-              <goals>
-                <goal>main-index</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
 </project>

@@ -6,15 +6,10 @@ import org.apache.maven.eventspy.EventSpy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sample.extension.dependency.DependencyClass;
-
 @Named
 public class MavenExtension implements EventSpy {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-
-  @SuppressWarnings("unused")
-  private final DependencyClass dummy = new DependencyClass(); //
 
   @Override
   public void init(Context context) throws Exception {

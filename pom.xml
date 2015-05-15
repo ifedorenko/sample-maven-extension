@@ -9,7 +9,7 @@
 
   <properties>
     <mavenVersion>3.2.2</mavenVersion>
-    <pluginTestingVersion>2.1.0</pluginTestingVersion>
+    <pluginTestingVersion>2.2.0</pluginTestingVersion>
   </properties>
 
   <dependencies>
@@ -66,7 +66,7 @@
       <plugin>
         <groupId>io.takari.maven.plugins</groupId>
         <artifactId>takari-lifecycle-plugin</artifactId>
-        <version>1.10.3</version>
+        <version>1.11.4</version>
         <extensions>true</extensions>
         <configuration>
           <proc>none</proc>
@@ -79,17 +79,11 @@
               <goal>testProperties</goal>
             </goals>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>sisu-maven-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
           <execution>
-            <id>generate-index</id>
+            <id>sisu-index</id>
+            <phase>process-classes</phase>
             <goals>
-              <goal>main-index</goal>
+              <goal>sisu-index</goal>
             </goals>
           </execution>
         </executions>
